@@ -1,0 +1,21 @@
+int foo(int x, int y, int z) {
+    return x - y + z;
+}
+
+int program(int argc, string[] argv) {
+  var result = 0;
+  var step = 1;
+  var ub = 10000;
+  var dead1 = 1;
+  var dead2 = 2;
+  var live1 = 3;
+  var live2 = 4;
+  for (var a = 0; a < ub; a = (1*1*1*1)*a + 1;) {
+    for (var b = 0; b < ub; b = (1*1*1*1)*b + 1;) {
+      dead1 = (2 * 3 * 4 * 5) * dead1;
+      dead2 = (2 * 3 * 4 * 5) * dead2;
+      result = result + foo(step * a, b, step);
+    }	
+  }
+  return result + live1 + live2 - 7;
+}
