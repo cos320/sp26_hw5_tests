@@ -11,7 +11,7 @@
 
     - include the names of your team members in a comment above the test
       along with a brief <description> of what Oat features are exercised
-    
+
     - <filename> should name an *.oat file that appears in this directory
       It should should declare the standard oat entry point:
 
@@ -42,4 +42,10 @@
 *)
 let student_tests : (string * string * string) list = [
     ("regalloctest3.oat", "", "0");
-] 
+
+    (* Team: Ben Aepli and Vedant Badoni
+       Description: structs, arrays, constant propagation,
+       bitwise operations, loops.
+    *)
+    ("cuckoo.oat", "", "Checksum: 9223372036854775784\n0");
+]
