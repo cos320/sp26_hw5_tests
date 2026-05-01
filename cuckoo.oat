@@ -1,0 +1,185 @@
+/*
+Ben Aepli and Vedant Badoni's performance test.
+Implements Cuckoo hashing with pre-allocated, fixed-size
+arrays (to isolate away allocation overhead).
+
+Because insert doesn't re-allocate, it will lose some data
+on max evictions.
+*/
+
+struct Cuckoo {
+    int capacity;
+    int mask;
+    int[] table1;
+    int[] table2
+}
+
+global sentinel = 9223372036854775800;
+
+Cuckoo cuckoo_new(int m)
+{
+    var capacity = 1 << m;
+
+    var table1 = new int[capacity];
+    for (var i = 0; i < capacity; i = i + 1;) {
+        table1[i] = sentinel;
+    }
+
+    var table2 = new int[capacity];
+    for (var i = 0; i < capacity; i = i + 1;) {
+        table2[i] = sentinel;
+    }
+    return new Cuckoo{
+        capacity = capacity;
+        mask = capacity - 1;
+        table1 = table1;
+        table2 = table2
+    };
+}
+
+/* Some stupid hash functions taken from the internet.
+   This is cubic hashing.
+*/
+int int_h1(int key) {
+    var a = 85831;
+    var b = 31247;
+    var c = 17401;
+    var d = 10973;
+
+    var x2 = key * key;
+    var x3 = x2 * key;
+
+    /* Small note: I declare these all sequentially
+       just as a stress test.
+    */
+    var term1 = a * x3;
+    var term2 = b * x2;
+    var term3 = c * key;
+
+    var sum1 = term1 + term2;
+    var sum2 = sum1 + term3;
+    var sum3 = sum2 + d;
+
+    if (sum3 < 0) {
+        return -sum3;
+    }
+    return sum3;
+}
+
+/*
+Another stupid hash function.
+*/
+int int_h2(int key) {
+    var t1 = key << 10;
+    var t2 = key + t1;
+
+    var t3 = t2 >> 6;
+    var t4 = t2 - t3;
+
+    var t5 = t4 << 3;
+    var t6 = t4 + t5;
+
+    var t7 = t6 >> 11;
+    var t8 = t6 - t7;
+
+    var t9 = t8 << 15;
+    var t10 = t8 + t9;
+
+    var prime = 16777619;
+    var t11 = t10 * prime;
+    var t12 = t11 >> 16;
+    var t13 = t11 - t12;
+
+    if (t13 < 0) {
+        return -t13;
+    }
+    return t13;
+}
+
+bool cuckoo_search(Cuckoo cuckoo, int target) {
+    var idx1 = int_h1(target) [&] cuckoo.mask;
+    if (cuckoo.table1[idx1] == target) {
+        return true;
+    }
+
+    var idx2 = int_h2(target) [&] cuckoo.mask;
+    if (cuckoo.table2[idx2] == target) {
+        return true;
+    }
+    return false;
+}
+
+global maxEvictions = 32;
+
+int[] cuckoo_impl_tableSelector(Cuckoo cuckoo, bool first) {
+    if (first) {
+        return cuckoo.table1;
+    } else {
+        return cuckoo.table2;
+    }
+}
+
+bool cuckoo_insert(Cuckoo cuckoo, int value) {
+    if (cuckoo_search(cuckoo, value)) {
+        return true;
+    }
+
+    var current = value;
+    var firstTable = true;
+    var evictions = 0;
+    while (evictions < maxEvictions) {
+        var table = cuckoo_impl_tableSelector(cuckoo, firstTable);
+
+        var hash = 0;
+        if (firstTable) {
+            hash = int_h1(current);
+        } else {
+            hash = int_h2(current);
+        }
+
+        var idx = hash [&] cuckoo.mask;
+        var existing = table[idx];
+        table[idx] = current;
+        if (existing == sentinel) {
+            return true;
+        }
+
+        current = existing;
+        firstTable = !firstTable;
+        evictions = evictions + 1;
+    }
+    return false;
+}
+
+int program(int argc, string[] argv) {
+    var m = 10;
+    var insertions = 1 << 24;
+
+    var cuckoo = cuckoo_new(m);
+
+    var seed = 29010;
+    for (var i = 0; i < insertions; i = i + 1;) {
+        seed = (seed * 4905891 + 2);
+
+        /* Unused variables for funsies. */
+        var unused1 = 1;
+        var unused2 = 2;
+        var unused3 = 3;
+        var unused4 = 4;
+
+        var key = seed [&] (1 << 27 - 1);
+        if (key < 0) {
+            key = 0 - key;
+        }
+
+        var ret = cuckoo_insert(cuckoo, key);
+        var search = seed [&] (1 << 23 - 1);
+        ret = cuckoo_search(cuckoo, search);
+    }
+    var checksum = cuckoo.table1[0] + cuckoo.table2[0] + cuckoo.table1[cuckoo.capacity - 1];
+
+    print_string("Checksum: ");
+    print_int(checksum);
+    print_string("\n\n");
+    return 0;
+}
