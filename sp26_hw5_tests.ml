@@ -64,7 +64,7 @@ let student_tests : (string * string * string) list = [
        arrays, function calls, constant propagation, bitwise operations, 
        loops, conditionals
     *)
-    ("colin-jishnu.oat", "", "Checksum: -580962\n0");
+    ("colin-jishnu.oat", "", "Checksum: -5809630");
 
     (* TEAM: hitagu-hw5 (Hita Gupta)
        Description: O(n^2) longest increasing subsequence via DP.
