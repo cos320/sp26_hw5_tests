@@ -59,7 +59,7 @@ let student_tests : (string * string * string) list = [
       Description: Bloom Filter
       arithmetic, bitwise operation, loops, structs, arrays
     *)
-    ("bloom_filter.oat", "", "Success\n0");
+    ("bloom_filter.oat", "", "Success0");
     (* TEAM: Colin Baird, Jishnu Roychoudhury
        arrays, function calls, constant propagation, bitwise operations, 
        loops, conditionals
