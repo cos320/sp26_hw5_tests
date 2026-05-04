@@ -1,0 +1,68 @@
+/* Ayush Jain, Isaac Badipe test
+Bloom Filter
+https://en.wikipedia.org/wiki/Bloom_filter
+*/
+
+struct Bloom {
+    int m;
+    int k;
+    bool[] filter
+}
+
+int hash(int s, int hashnum, int m, bool[] filter){
+    return exp_mod(s, hashnum, m);
+}
+
+void add(Bloom bloom, int elem) {
+    var bloom2 = bloom;
+    var m = bloom.m;
+    var filter = bloom.filter;
+    for (var i = 0; i < bloom.k; i = i + 1;) {
+        bloom2.filter[hash(elem, i, m, filter)] = true;
+    }
+    return;
+}
+
+bool included(Bloom bloom, int elem) {
+    var bloom2 = bloom;
+    var filter = bloom.filter;
+    for (var i = 0; i < bloom.k; i = i + 1;) {
+        if (!(filter[hash(elem, i, bloom2.m, filter)])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int exp_mod(int base, int exponent, int mod) {
+    var useless1 = 1;
+    var useless2 = 1;
+    var useless3 = 1;
+    var ans = 1;
+    var other = base;
+    while (exponent != 0) {
+        other = other * other;
+        if ((exponent [&] 1) == 1) {
+            ans = ans * other;
+        }
+        while (ans >= mod) {
+            ans = ans - mod;
+        }
+        exponent = exponent >> 1;
+    }
+    return ans * useless1 * useless2 * useless3;
+}
+
+int program(int argc, string[] argv) {
+    var bloom = new Bloom{m=100; k=2; filter=new bool[100]};
+    for (var i = 0; i < 1000; i = i + 1;){
+        add(bloom, 5 * i);
+    }
+    if (included(bloom, 10)) {
+        print_string("Success\n");
+    }
+    else{
+        print_string("Oops\n");
+    }
+    return 0;
+}

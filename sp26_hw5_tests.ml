@@ -54,4 +54,10 @@ let student_tests : (string * string * string) list = [
        global arrays, arithmetic, bitwise operation, loops
     *)
     ("test_yanda.oat", "", "0");
+
+    (* TEAM: Isaac Badipe and Ayush Jain
+      Description: Bloom Filter
+      arithmetic, bitwise operation, loops, structs, arrays
+    *)
+    ("bloom_filter.oat", "", "Success\n0");
 ]
