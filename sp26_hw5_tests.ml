@@ -48,4 +48,10 @@ let student_tests : (string * string * string) list = [
        bitwise operations, loops.
     *)
     ("cuckoo.oat", "", "Checksum: 9223372036854775784\n0");
+
+    (* TEAM: yanda-hw5 (Daniel Yang)
+       Description: Kalman filter covariance prediction step
+       global arrays, arithmetic, bitwise operation, loops
+    *)
+    ("test_yanda.oat", "", "0");
 ]
