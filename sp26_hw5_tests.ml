@@ -71,4 +71,10 @@ let student_tests : (string * string * string) list = [
        arrays, nested loops, arithmetic.
     *)
     ("lis_length.oat", "", "0");
+
+    (* TEAM: Yichi Zhang
+       Description: mix/fold checksum over arrays with loops,
+       branches, function calls, and bitwise operations.
+    *)
+    ("mixfold.oat", "", "Checksum: 1978095801\n0");
 ]

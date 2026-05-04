@@ -1,0 +1,50 @@
+/* TEAM niagi-hw5 performance/correctness test
+   Mix/fold workload with arrays, loops, branches, and bitwise ops.
+*/
+
+struct Acc {
+  int sum;
+  int x
+}
+
+int mix(int seed, int i) {
+  var v = seed * 1103515245 + 12345 + i;
+  v = (v >> 2) [&] 1048575;
+  return v;
+}
+
+int fold(int[] xs, int n) {
+  var i = 0;
+  var s = 0;
+  while (i < n) {
+    var v = xs[i];
+    if ((v [&] 1) == 0) {
+      s = s + (v >> 1);
+    } else {
+      s = s - (v << 1);
+    }
+    i = i + 1;
+  }
+  return s;
+}
+
+int program(int argc, string[] argv) {
+  var n = 512;
+  var xs = new int[n];
+  var acc = new Acc{sum = 0; x = 0};
+  var seed = argc + 97;
+
+  for (var i = 0; i < n; i = i + 1;) {
+    seed = mix(seed, i);
+    xs[i] = seed;
+    acc.sum = acc.sum + (seed [&] 255);
+    acc.x = acc.x + ((seed >> 3) [&] 1023);
+  }
+
+  var f = fold(xs, n);
+  var checksum = (f + acc.sum + (acc.x [&] 65535)) [&] 2147483647;
+  print_string("Checksum: ");
+  print_int(checksum);
+  print_string("\n");
+  return 0;
+}
