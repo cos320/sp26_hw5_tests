@@ -54,4 +54,9 @@ let student_tests : (string * string * string) list = [
        global arrays, arithmetic, bitwise operation, loops
     *)
     ("test_yanda.oat", "", "0");
+    (* TEAM: Colin Baird, Jishnu Roychoudhury
+       arrays, function calls, constant propagation, bitwise operations, 
+       loops, conditionals
+    *)
+    ("colin-jishnu.oat", "", "Checksum: -580962\n0");
 ]
