@@ -1,0 +1,120 @@
+/* yanda-hw4 (Daniel Yang) Performance Test
+Simulates the covariance prediction step from a simple Kalman-style tracker
+by repeatedly computing
+    nextmat = amat * pmat * transpose(amat) + qmat
+and returning a checksum
+*/
+
+global amat = new int[]{
+  1, 1, 0, 0,
+  0, 1, 0, 0,
+  0, 0, 1, 1,
+  0, 0, 0, 1
+};
+
+global qmat = new int[]{
+  3, 1, 0, 0,
+  1, 2, 0, 0,
+  0, 0, 3, 1,
+  0, 0, 1, 2
+};
+
+global pmat = new int[]{
+  100, 0, 0, 0,
+  0, 100, 0, 0,
+  0, 0, 100, 0,
+  0, 0, 0, 100
+};
+
+global tmpmat = new int[]{
+  0, 0, 0, 0,
+  0, 0, 0, 0,
+  0, 0, 0, 0,
+  0, 0, 0, 0
+};
+
+global nextmat = new int[]{
+  0, 0, 0, 0,
+  0, 0, 0, 0,
+  0, 0, 0, 0,
+  0, 0, 0, 0
+};
+
+int cov_step(int[] a, int[] p, int[] q, int[] tmp, int[] out) {
+  var i = 0;
+  var j = 0;
+  var k = 0;
+  var sum = 0;
+  i = 0;
+  while (i < 4) {
+    j = 0;
+    while (j < 4) {
+      k = 0;
+      sum = 0;
+      while (k < 4) {
+        sum = sum + a[i * 4 + k] * p[k * 4 + j];
+        k = k + 1;
+      }
+      tmp[i * 4 + j] = sum;
+      j = j + 1;
+    }
+    i = i + 1;
+  }
+  i = 0;
+  while (i < 4) {
+    j = 0;
+    while (j < 4) {
+      k = 0;
+      sum = q[i * 4 + j];
+      while (k < 4) {
+        sum = sum + tmp[i * 4 + k] * a[j * 4 + k];
+        k = k + 1;
+      }
+      out[i * 4 + j] = sum;
+      j = j + 1;
+    }
+    i = i + 1;
+  }
+  return out[0];
+}
+
+int copy(int[] src, int[] dst) {
+  var i = 0;
+  var acc = 0;
+  var x = 0;
+  i = 0;
+  while (i < 16) {
+    x = src[i];
+    dst[i] = x;
+    acc = acc + x;
+    i = i + 1;
+  }
+  return acc;
+}
+
+int checksum(int[] src) {
+  var i = 0;
+  var acc = 0;
+  i = 0;
+  while (i < 16) {
+    acc = acc + src[i] * (i + 1);
+    i = i + 1;
+  }
+  return acc;
+}
+
+int program(int argc, string[] argv) {
+  var mask = 65535;
+  var i = 0;
+  var guard = argc + 1;
+
+  i = 0;
+  while (i < 1000000) {
+    guard = guard + cov_step(amat, pmat, qmat, tmpmat, nextmat);
+    guard = guard + copy(nextmat, pmat);
+    guard = guard [&] mask;
+    i = i + 1;
+  }
+
+  return guard + checksum(pmat) - 170;
+}
