@@ -1,0 +1,53 @@
+/*
+O(n^2) solution for finding the length of the longest increasing subsequence 
+(not the optimized O(n log n) one for the purpose of this test case)
+*/
+
+int lengthOfLIS(int[] nums, int[] dp, int n) {
+  var maximum = 1;
+
+  /* reset dp to all 1s to reuse the same allocation each iteration */
+  for (var k = 0; k < n; k = k + 1;) {
+    dp[k] = 1;
+  }
+
+  for (var i = 0; i < n; i = i + 1;) {
+    for (var j = 0; j < i; j = j + 1;) {
+      if (nums[j] < nums[i]) {
+        var candidate = 1 + dp[j];
+        if (candidate > dp[i]) {
+          dp[i] = candidate;
+        }
+      }
+    }
+    if (dp[i] > maximum) {
+      maximum = dp[i];
+    }
+  }
+
+  return maximum;
+}
+
+int program(int argc, string[] argv) {
+  /* fixed input array with LIS length = 14 */
+  var n = 20;
+  var nums = new int[]{
+    3, 10, 2, 1, 20, 4, 6, 5, 7, 15,
+    8, 9, 11, 12, 13, 14, 16, 17, 18, 19
+  };
+
+  var dp = new int[n];
+
+  /* run many times */
+  var iters = 3000;
+  var result = 0;
+  for (var t = 0; t < iters; t = t + 1;) {
+    result = lengthOfLIS(nums, dp, n);
+  }
+
+  if (result == 14) {
+    return 0;
+  } else {
+    return 1;
+  }
+}

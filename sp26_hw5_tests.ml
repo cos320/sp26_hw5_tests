@@ -60,4 +60,15 @@ let student_tests : (string * string * string) list = [
       arithmetic, bitwise operation, loops, structs, arrays
     *)
     ("bloom_filter.oat", "", "Success\n0");
+    (* TEAM: Colin Baird, Jishnu Roychoudhury
+       arrays, function calls, constant propagation, bitwise operations, 
+       loops, conditionals
+    *)
+    ("colin-jishnu.oat", "", "Checksum: -580962\n0");
+
+    (* TEAM: hitagu-hw5 (Hita Gupta)
+       Description: O(n^2) longest increasing subsequence via DP.
+       arrays, nested loops, arithmetic.
+    *)
+    ("lis_length.oat", "", "0");
 ]
