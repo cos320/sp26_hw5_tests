@@ -77,4 +77,10 @@ let student_tests : (string * string * string) list = [
        branches, function calls, and bitwise operations.
     *)
     ("mixfold.oat", "", "Checksum: 1978095801\n0");
+
+    (* TEAM: Will Trojniak, Grace Sun
+       Description: calculate minimum number of edits needed to make
+       matching arrays
+    *)
+    ("test_will_grace.oat", "", "0");
 ]
