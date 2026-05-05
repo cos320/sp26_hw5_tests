@@ -52,6 +52,5 @@ int program(int argc, string[] argv) {
 
   print_string("Checksum: ");
   print_int(checksum);
-  print_string("\n");
   return 0;
 }

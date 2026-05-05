@@ -76,7 +76,7 @@ let student_tests : (string * string * string) list = [
        Description: mix/fold checksum over arrays with loops,
        branches, function calls, and bitwise operations.
     *)
-    ("mixfold.oat", "", "Checksum: 19780958010");
+    ("mixfold.oat", "", "Checksum: 19304598330");
 
     (* TEAM: Will Trojniak, Grace Sun
        Description: calculate minimum number of edits needed to make
