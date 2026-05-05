@@ -48,7 +48,7 @@ int program(int argc, string[] argv) {
     1, 2, 6, 7, 2, 9, 3, 2
   };
 
-  var iters = 3000;
+  var iters = 50000;
   var result = 0;
   for (var t = 0; t < iters; t = t + 1;) {
     result = editCount(a, n, b, m);
