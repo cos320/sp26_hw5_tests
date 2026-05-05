@@ -89,4 +89,11 @@ let student_tests : (string * string * string) list = [
        binary search optimization for insert.
     *)
     ("binary_insertion_sort.oat", "", "012345102134251563910392312343598200");
+    
+    (* TEAM: Raheem Idowu 
+       Description: BF Parser that runs a quine.
+    *)
+    ("bf.oat", "", "0");
+
+
 ]
