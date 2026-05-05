@@ -33,16 +33,23 @@ int program(int argc, string[] argv) {
   var xs = new int[n];
   var acc = new Acc{sum = 0; x = 0};
   var seed = argc + 97;
+  var checksum = 0;
 
-  for (var i = 0; i < n; i = i + 1;) {
-    seed = mix(seed, i);
-    xs[i] = seed;
-    acc.sum = acc.sum + (seed [&] 255);
-    acc.x = acc.x + ((seed >> 3) [&] 1023);
+  for (var round = 0; round < 20000; round = round + 1;) {
+    acc.sum = 0;
+    acc.x = 0;
+
+    for (var i = 0; i < n; i = i + 1;) {
+      seed = mix(seed, i + round);
+      xs[i] = seed;
+      acc.sum = acc.sum + (seed [&] 255);
+      acc.x = acc.x + ((seed >> 3) [&] 1023);
+    }
+
+    var f = fold(xs, n);
+    checksum = (f + acc.sum + (acc.x [&] 65535)) [&] 2147483647;
   }
 
-  var f = fold(xs, n);
-  var checksum = (f + acc.sum + (acc.x [&] 65535)) [&] 2147483647;
   print_string("Checksum: ");
   print_int(checksum);
   print_string("\n");
