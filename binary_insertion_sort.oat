@@ -1,3 +1,9 @@
+/*
+Arnav Ambre and John Wu's test case
+Binary Insertion Sort
+*/
+
+global og = new int[]{5, 3923, 910, 34, 59820, 1, 12343, 0, 10, 251, 2, 4, 563, 21, 3};
 global arr = new int[]{5, 3923, 910, 34, 59820, 1, 12343, 0, 10, 251, 2, 4, 563, 21, 3};
 
 int binarySearch(int key, int low, int high) {
@@ -19,7 +25,6 @@ void binaryInsertionSort(int n) {
   var i = 1;
   while (i < n) {
     var key = arr[i];
-
     var pos = binarySearch(key, 0, i);
 
     var j = i;
@@ -34,13 +39,29 @@ void binaryInsertionSort(int n) {
   return;
 }
 
+void copyArray(int n) {
+  var i = 0;
+  while (i < n) {
+    arr[i] = og[i];
+    i = i + 1;
+  }
+  return;
+}
+
 int program(int argc, string[] argv) {
   var n = 15;
 
-  binaryInsertionSort(n);
+  var t = 0;
+  while (t < 200000) {
+    copyArray(n);
+    binaryInsertionSort(n);
+    t = t + 1;
+  }
 
-  for (var j = 0; j < n; j = j+1;) {
+  var j = 0;
+  while (j < n) {
     print_int(arr[j]);
+    j = j + 1;
   }
 
   return 0;
