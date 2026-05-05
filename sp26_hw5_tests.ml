@@ -61,7 +61,7 @@ let student_tests : (string * string * string) list = [
     *)
     ("bloom_filter.oat", "", "Success0");
     (* TEAM: Colin Baird, Jishnu Roychoudhury
-       arrays, function calls, constant propagation, bitwise operations, 
+       arrays, function calls, constant propagation, bitwise operations,
        loops, conditionals
     *)
     ("colin-jishnu.oat", "", "Checksum: -5809630");
@@ -76,11 +76,17 @@ let student_tests : (string * string * string) list = [
        Description: mix/fold checksum over arrays with loops,
        branches, function calls, and bitwise operations.
     *)
-    ("mixfold.oat", "", "Checksum: 1978095801\n0");
+    ("mixfold.oat", "", "Checksum: 19780958010");
 
     (* TEAM: Will Trojniak, Grace Sun
        Description: calculate minimum number of edits needed to make
        matching arrays
     *)
     ("test_will_grace.oat", "", "0");
+
+    (* TEAM: Arnav Ambre, John Wu
+       Description: Sort an integer array using insertion sort with
+       binary search optimization for insert.
+    *)
+    ("binary_insertion_sort.oat", "", "012345102134251563910392312343598200");
 ]
